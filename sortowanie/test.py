@@ -4,10 +4,11 @@ import bubble
 import insertion
 import selection
 import counting
+import heap
 
 seed  = 2137
 
-n = [2000]
+n = [5000]
 maxNumber = 100
 
 def setupRandom(seed, n):
@@ -72,6 +73,17 @@ for i in n:
     x = setupRandom(seed,i)
     before = datetime.datetime.utcnow().timestamp()
     x = counting.sort(x, i, maxNumber)
+    after = datetime.datetime.utcnow().timestamp()
+    #print(x)
+    print("Time for n = "+str(i))
+    print(after-before)
+
+print("Heap sort test:")
+
+for i in n:
+    x = setupRandom(seed,i)
+    before = datetime.datetime.utcnow().timestamp()
+    x = heap.sort(x)
     after = datetime.datetime.utcnow().timestamp()
     #print(x)
     print("Time for n = "+str(i))
