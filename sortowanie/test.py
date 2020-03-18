@@ -3,14 +3,16 @@ import datetime
 import bubble
 import insertion
 import selection
+import counting
 
 seed  = 2137
 
-n = [1000]
+n = [2000]
+maxNumber = 100
 
 def setupRandom(seed, n):
     random.seed(seed)
-    x = [random.randint(1,n) for i in range(n)]
+    x = [random.randint(1,maxNumber) for i in range(n)]
     return x
 
 def setupConst(n):
@@ -59,6 +61,17 @@ for i in n:
     x = setupRandom(seed,i)
     before = datetime.datetime.utcnow().timestamp()
     selection.sort(x)
+    after = datetime.datetime.utcnow().timestamp()
+    #print(x)
+    print("Time for n = "+str(i))
+    print(after-before)
+
+print("Counting sort test:")
+
+for i in n:
+    x = setupRandom(seed,i)
+    before = datetime.datetime.utcnow().timestamp()
+    x = counting.sort(x, i, maxNumber)
     after = datetime.datetime.utcnow().timestamp()
     #print(x)
     print("Time for n = "+str(i))
