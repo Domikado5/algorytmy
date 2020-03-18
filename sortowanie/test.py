@@ -2,11 +2,11 @@ import random
 import datetime
 import bubble
 import insertion
-
+import selection
 
 seed  = 2137
 
-n = [100]
+n = [1000]
 
 def setupRandom(seed, n):
     random.seed(seed)
@@ -38,7 +38,7 @@ for i in n:
     before = datetime.datetime.utcnow().timestamp()
     bubble.sort(x)
     after = datetime.datetime.utcnow().timestamp()
-    print(x)
+    #print(x)
     print("Time for n = "+str(i))
     print(after-before)
 
@@ -49,6 +49,17 @@ for i in n:
     before = datetime.datetime.utcnow().timestamp()
     insertion.sort(x)
     after = datetime.datetime.utcnow().timestamp()
-    print(x)
+    #print(x)
+    print("Time for n = "+str(i))
+    print(after-before)
+
+print("Selection sort test:")
+
+for i in n:
+    x = setupRandom(seed,i)
+    before = datetime.datetime.utcnow().timestamp()
+    selection.sort(x)
+    after = datetime.datetime.utcnow().timestamp()
+    #print(x)
     print("Time for n = "+str(i))
     print(after-before)
