@@ -5,11 +5,13 @@ import insertion
 import selection
 import counting
 import heap
+import quickRight
+import quickRandom
 
 seed  = 2137
 
-n = [5000]
-maxNumber = 100
+n = [10000]
+maxNumber = 100000
 
 def setupRandom(seed, n):
     random.seed(seed)
@@ -84,6 +86,28 @@ for i in n:
     x = setupRandom(seed,i)
     before = datetime.datetime.utcnow().timestamp()
     x = heap.sort(x)
+    after = datetime.datetime.utcnow().timestamp()
+    #print(x)
+    print("Time for n = "+str(i))
+    print(after-before)
+
+print("Quick sort (right) test:")
+
+for i in n:
+    x = setupRandom(seed,i)
+    before = datetime.datetime.utcnow().timestamp()
+    x = quickRight.sort(x,0,i-1)
+    after = datetime.datetime.utcnow().timestamp()
+    #print(x)
+    print("Time for n = "+str(i))
+    print(after-before)
+
+print("Quick sort (random) test:")
+
+for i in n:
+    x = setupRandom(seed,i)
+    before = datetime.datetime.utcnow().timestamp()
+    x = quickRandom.sort(x,0,i-1)
     after = datetime.datetime.utcnow().timestamp()
     #print(x)
     print("Time for n = "+str(i))
