@@ -9,12 +9,12 @@ import quickRight
 import quickRandom
 import merge
 import shell
-import sys
 
-sys.setrecursionlimit(1000000)
-seed  = 5937 # seed do losowania tablic
+seed  = 5937 # seed do generowania losowych tablic
 n = [10000,20000,30000,40000,50000] # wielkosci tablic
-maxNumber = 1000000 # maksymalny zakres liczb
+maxNumber = 1000000 # maksymalny zakres
+sortType = [3,8,7,4,2,1,0] # kolejnosc i wybor sortowań 0-bubble 1-insertion 2-selection 3-counting 4-heap 5-quickRight 6-quickRandom 7-shell 8-merge
+# pominieto quicksorty z uwagi na przekroczenie maksymalnej rekurencji
 f = open("results.txt",'w+')
 
 def setupRandom(seed, n):
@@ -39,9 +39,6 @@ def setupA(n):
     x2 = [i for i in range(n,0,-1) if i%2!=0]
     x = x1 + x2
     return x
-
-sortType = [3,8,7,4,2,1,0]
-# pominieto quicksorty z uwagi na przekroczenie maksymalnej rekurencji
 
 for s in sortType:
     if s == 0:
@@ -77,6 +74,7 @@ for s in sortType:
                 x = setupAsc(i)
             elif j == 4:
                 x = setupA(i)
+            #print(x) # tablica przed posortowaniem
             before = round(time.time_ns() / (10 ** 9),10)
             if s == 0:
                 x = bubble.sort(x)
@@ -97,7 +95,7 @@ for s in sortType:
             elif s == 8:
                 x = merge.sort(x,0,len(x)-1)
             after = round(time.time_ns() / (10 ** 9),10)
-            #print(x)
+            #print(x) # tablica po sortowaniu
             tmpTime += ';' + str(after-before)
             print(after-before)
         f.write(tmpTime+"\n")
