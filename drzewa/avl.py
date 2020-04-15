@@ -42,15 +42,7 @@ class Tree:
             if leaf.value >= parrent.right.value: # RR rotation
                 return self.rotateLeft(parrent)
             elif leaf.value < parrent.right.value: # RL rotation
-                print("ROOT")
-                print(self.root.value)
-                print("PARRENT RIGHT")
-                print(parrent.right.value)
                 parrent.right = self.rotateRight(parrent.right)
-                print("ROOT")
-                print(self.root.value)
-                print("PARRENT")
-                print(parrent.value)
                 return self.rotateLeft(parrent)
     
     def increaseHeight(self, parrent, i=1):
@@ -166,9 +158,8 @@ myTree.insert(Leaf(40), myTree.root)
 myTree.insert(Leaf(50), myTree.root)
 myTree.insert(Leaf(25), myTree.root)
 print(myTree.root.value)
-#myTree.printTree(myTree.root)
+myTree.printTree(myTree.root)
 print("Wysokosc drzewa:")
 print(myTree.root.height)
 myTree.max(myTree.root)
-#myTree.min(myTree.root)\
-print(myTree.root.left.left.value)
+myTree.min(myTree.root)
