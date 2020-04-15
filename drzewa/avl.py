@@ -29,22 +29,82 @@ class Tree:
                 parrent.right = self.insert(leaf,parrent.right)
             else:
                 self.insert(leaf,parrent.right)
-        # checking if tree is balanced after insertion
+        # checking if tree is balanced after insert
+        self.balance(leaf.value, parrent)
+    
+    def balance(self, value, parrent):
         balanceFactor = self.getBalanceFactor(parrent)
 
         if balanceFactor > 1: #left branch is higher than right branch
-            if leaf.value < parrent.left.value: # LL rotation
+            if value < parrent.left.value: # LL rotation
                 return self.rotateRight(parrent)
-            elif leaf.value >= parrent.left.value: # LR rotation
+            elif value >= parrent.left.value: # LR rotation
                 parrent.left = self.rotateLeft(parrent.left)
                 return self.rotateRight(parrent)
         elif balanceFactor < -1: #right branch is higher than left branch
-            if leaf.value >= parrent.right.value: # RR rotation
+            if value >= parrent.right.value: # RR rotation
                 return self.rotateLeft(parrent)
-            elif leaf.value < parrent.right.value: # RL rotation
+            elif value < parrent.right.value: # RL rotation
                 parrent.right = self.rotateRight(parrent.right)
                 return self.rotateLeft(parrent)
-    
+
+    def delete(self, value, parrent):
+        if parrent is None: # no value found
+            return parrent
+        elif value < parrent.value: # searching value on the left branch
+            parrent.left = self.delete(value, parrent.left)
+            if parrent == self.root:
+                self.root.left = parrent.left
+        elif value > parrent.value: # searching value on the right branch
+            parrent.right = self.delete(value, parrent.right)
+            if parrent == self.root:
+                self.root.right = parrent.right
+        else: # found value
+            if parrent.left is None: # no left branch
+                tmp = parrent.right 
+                if parrent.right is not None:
+                    tmp.parrent = parrent.parrent
+                parrent = None
+                return tmp
+            elif parrent.right is None: # no right branch
+                tmp = parrent.left
+                if parrent.left is not None:
+                    tmp.parrent = parrent.parrent
+                parrent = None
+                return tmp
+            tmp = self.minValue(parrent.right)
+            parrent.value = tmp.value
+            parrent.right = self.delete(tmp.value, parrent.right)
+        # update height
+        parrent.height = self.updateHeight(parrent)
+        if parrent == self.root:
+            self.root.height = parrent.height
+        
+        # check balance
+        balance = self.getBalanceFactor(parrent)
+        if balance > 1:
+            if self.getBalanceFactor(parrent.left) >= 0:
+                return self.rotateRight(parrent)
+            elif self.getBalanceFactor(parrent.left) < 0:
+                parrent.left = self.rotateLeft(parrent.left)
+                return self.rotateRight(parrent)
+        if balance < -1:
+            if self.getBalanceFactor(parrent.right) <= 0:
+                return self.rotateLeft(parrent)
+            elif self.getBalanceFactor(parrent.right) > 0:
+                parrent.right = self.rotateRight(parrent.right)
+                return self.rotateLeft(parrent)
+        return parrent
+            
+            
+    def rootUpdate(self, leaf, parrent):
+        if parrent == self.root:
+            self.root = leaf
+        elif parrent == self.root.left:
+            self.root.left = leaf
+        elif parrent == self.root.right:
+            self.root.right = leaf
+
     def increaseHeight(self, parrent, i=1):
         i += 1
         if parrent is None:
@@ -122,27 +182,32 @@ class Tree:
         self.printTree(root.left)
         self.printTree(root.right)
 
-    def max(self, root, route=[]):
-        if root.right is None:
-            route.append(root.value)
+    def max(self, parrent, route=[]):
+        if parrent.right is None:
+            route.append(parrent.value)
             print("Sciezka: ")
             print(*route, sep = " -> ")
             print("Max: ")
-            print(root.value)
+            print(parrent.value)
         else:
-            route.append(root.value)
-            self.max(root.right)
+            route.append(parrent.value)
+            self.max(parrent.right)
     
-    def min(self, root, route=[]):
-        if root.left is None:
-            route.append(root.value)
+    def minValue(self, parrent):
+        if parrent is None or parrent.left is None:
+            return parrent
+        return self.minValue(parrent.left)
+
+    def min(self, parrent, route=[]):
+        if parrent.left is None:
+            route.append(parrent.value)
             print("Sciezka:")
             print(*route, sep = " -> ")
             print("Min: ")
-            print(root.value)
+            print(parrent.value)
         else:
-            route.append(root.value)
-            self.min(root.left)
+            route.append(parrent.value)
+            self.min(parrent.left)
 
     def isRoot(self, parrent):
         if parrent.parrent is None:
@@ -157,9 +222,16 @@ myTree.insert(Leaf(30), myTree.root)
 myTree.insert(Leaf(40), myTree.root)
 myTree.insert(Leaf(50), myTree.root)
 myTree.insert(Leaf(25), myTree.root)
+print("Korzeń: ")
 print(myTree.root.value)
 myTree.printTree(myTree.root)
 print("Wysokosc drzewa:")
 print(myTree.root.height)
 myTree.max(myTree.root)
 myTree.min(myTree.root)
+myTree.delete(20, myTree.root)
+print("Korzeń:")
+print(myTree.root.value)
+myTree.printTree(myTree.root)
+print("Wysokosc drzewa:")
+print(myTree.root.height)
