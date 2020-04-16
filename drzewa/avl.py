@@ -175,12 +175,36 @@ class Tree:
             right = parrent.right.height
         return left - right
 
-    def printTree(self, root):
+    def printTree(self, root): # preorder printing
         if root is None:
             return
         print("{} ".format(root.value), end="")
         self.printTree(root.left)
         self.printTree(root.right)
+
+    def inOrder(self, root): # inorder printing
+        if root is None:
+            return
+        self.printTree(root.left)
+        print("{} ".format(root.value), end="")
+        self.printTree(root.right)
+
+    def postOrder(self, root): # postorder printing
+        if root is None:
+            return
+        self.printTree(root.left)
+        self.printTree(root.right)
+        print("{} ".format(root.value), end="")
+
+    def chopDown(self, root): # delete whole tree - postorder
+        if root is None:
+            return
+        root.left = self.chopDown(root.left)
+        root.right = self.chopDown(root.right)
+        if root == self.root:
+            self.root = None
+        else:
+            self.delete(root.value, root)
 
     def max(self, parrent, route=[]):
         if parrent.right is None:
@@ -225,7 +249,7 @@ myTree.insert(Leaf(25), myTree.root)
 print("Korzeń: ")
 print(myTree.root.value)
 myTree.printTree(myTree.root)
-print("Wysokosc drzewa:")
+print("\nWysokosc drzewa:")
 print(myTree.root.height)
 myTree.max(myTree.root)
 myTree.min(myTree.root)
@@ -233,5 +257,14 @@ myTree.delete(20, myTree.root)
 print("Korzeń:")
 print(myTree.root.value)
 myTree.printTree(myTree.root)
-print("Wysokosc drzewa:")
+print("\nWysokosc drzewa:")
 print(myTree.root.height)
+print("Preorder:")
+myTree.printTree(myTree.root)
+print("\nInorder:")
+myTree.inOrder(myTree.root)
+print("\nPostorder:")
+myTree.postOrder(myTree.root)
+myTree.chopDown(myTree.root)
+print("\nPreorder:")
+myTree.printTree(myTree.root)
