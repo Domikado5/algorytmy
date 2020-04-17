@@ -206,31 +206,32 @@ class Tree:
         else:
             self.delete(root.value, root)
 
-    def max(self, parrent, route=[]):
-        if parrent.right is None:
-            route.append(parrent.value)
-            print("Sciezka: ")
-            print(*route, sep = " -> ")
-            print("Max: ")
-            print(parrent.value)
-        else:
-            route.append(parrent.value)
-            self.max(parrent.right)
-    
     def minValue(self, parrent):
         if parrent is None or parrent.left is None:
             return parrent
         return self.minValue(parrent.left)
 
-    def min(self, parrent, route=[]):
+    def maxValue(self, parrent):
+        if parrent is None or parrent.right is None:
+            return parrent
+        return self.maxValue(parrent.right)
+
+    def max(self, parrent):
+        if parrent.right is None:
+            print(parrent.value)
+            print("Max: ")
+            print(parrent.value)
+        else:
+            print("{} -> ".format(parrent.value), end="")
+            self.max(parrent.right)
+    
+    def min(self, parrent):
         if parrent.left is None:
-            route.append(parrent.value)
-            print("Sciezka:")
-            print(*route, sep = " -> ")
+            print(parrent.value)
             print("Min: ")
             print(parrent.value)
         else:
-            route.append(parrent.value)
+            print("{} -> ".format(parrent.value), end="")
             self.min(parrent.left)
 
     def isRoot(self, parrent):
@@ -251,7 +252,11 @@ print(myTree.root.value)
 myTree.printTree(myTree.root)
 print("\nWysokosc drzewa:")
 print(myTree.root.height)
+print("Max value route: ")
 myTree.max(myTree.root)
+print("Max value route: ")
+myTree.max(myTree.root)
+print("Min value route: ")
 myTree.min(myTree.root)
 myTree.delete(20, myTree.root)
 print("Korzeń:")
