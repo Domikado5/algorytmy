@@ -104,20 +104,20 @@ class Tree:
                 self.root.right = y
         return y
 
-    def backbone(self, parrent, back=[]):
+    def backbone(self, parrent, back=[]): # create backbone to build a new tree
         if parrent is None:
             return
         self.backbone(parrent.left, back)
         back.append(parrent.value)
         self.backbone(parrent.right, back)
 
-    def dsw(self, parrent):
+    def dsw(self, parrent): # DSW algorithm
         backbone = []
         self.backbone(parrent, backbone)
         n = len(backbone)-1
         self.root = self.buildTree(backbone, 0, n)
         
-    def buildTree(self, backbone, start, end):
+    def buildTree(self, backbone, start, end): # build tree from backbone
         if start>end:
             return 
         mid = (start+end)//2
