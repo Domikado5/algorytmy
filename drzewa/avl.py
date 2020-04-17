@@ -29,10 +29,10 @@ class Tree:
                 parrent.right = self.insert(leaf,parrent.right)
             else:
                 self.insert(leaf,parrent.right)
-        # checking if tree is balanced after insert
-        self.balance(leaf.value, parrent)
+        # checking balance after insert
+        self.balanceAfterInsert(leaf.value, parrent)
     
-    def balance(self, value, parrent):
+    def balanceAfterInsert(self, value, parrent):
         balanceFactor = self.getBalanceFactor(parrent)
 
         if balanceFactor > 1: #left branch is higher than right branch
@@ -81,22 +81,26 @@ class Tree:
             self.root.height = parrent.height
         
         # check balance
+        self.balanceAfterDelete(parrent)
+
+        return parrent
+            
+    def balanceAfterDelete(self, parrent):
         balance = self.getBalanceFactor(parrent)
+
         if balance > 1:
-            if self.getBalanceFactor(parrent.left) >= 0:
+            if self.getBalanceFactor(parrent.left) >= 0: # LL rotation
                 return self.rotateRight(parrent)
-            elif self.getBalanceFactor(parrent.left) < 0:
+            elif self.getBalanceFactor(parrent.left) < 0: # LR rotation
                 parrent.left = self.rotateLeft(parrent.left)
                 return self.rotateRight(parrent)
         if balance < -1:
-            if self.getBalanceFactor(parrent.right) <= 0:
+            if self.getBalanceFactor(parrent.right) <= 0: # RR rotation 
                 return self.rotateLeft(parrent)
-            elif self.getBalanceFactor(parrent.right) > 0:
+            elif self.getBalanceFactor(parrent.right) > 0: # RL rotation
                 parrent.right = self.rotateRight(parrent.right)
                 return self.rotateLeft(parrent)
-        return parrent
-            
-            
+
     def rootUpdate(self, leaf, parrent):
         if parrent == self.root:
             self.root = leaf
@@ -258,7 +262,7 @@ print("Max value route: ")
 myTree.max(myTree.root)
 print("Min value route: ")
 myTree.min(myTree.root)
-myTree.delete(20, myTree.root)
+myTree.delete(30, myTree.root)
 print("Korzeń:")
 print(myTree.root.value)
 myTree.printTree(myTree.root)
