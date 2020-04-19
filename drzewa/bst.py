@@ -39,22 +39,30 @@ class Tree:
             if parrent == self.root:
                 self.root.right = parrent.right
         else: # found value
+            if parrent == self.root:
+                flag = True
             if parrent.left is None: # no left branch
                 tmp = parrent.right 
                 if parrent.right is not None:
                     tmp.parrent = parrent.parrent
                 parrent = None
+                if flag:
+                    self.root = tmp
                 return tmp
             elif parrent.right is None: # no right branch
                 tmp = parrent.left
                 if parrent.left is not None:
                     tmp.parrent = parrent.parrent
                 parrent = None
+                if flag:
+                    self.root = tmp
                 return tmp
             tmp = self.minValue(parrent.right)
-            parrent.value = tmp.value
+            if flag:
+                self.root.value = tmp.value
+            else:
+                parrent.value = tmp.value
             parrent.right = self.delete(tmp.value, parrent.right)
-
         return parrent
 
     def rootUpdate(self, leaf, parrent):
@@ -225,7 +233,7 @@ print("Max value route: ")
 myTree.max(myTree.root)
 print("Min value route: ")
 myTree.min(myTree.root)
-myTree.delete(30, myTree.root)
+myTree.delete(10, myTree.root)
 print("Korzeń:")
 print(myTree.root.value)
 myTree.printTree(myTree.root)
