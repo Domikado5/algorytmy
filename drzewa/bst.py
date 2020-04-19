@@ -82,6 +82,11 @@ class Tree:
                 self.root.left = y
             elif y.parrent.right == parrent:
                 self.root.right = y
+        else:
+            if y.parrent.left == parrent:
+                y.parrent.left = y
+            elif y.parrent.right == parrent:
+                y.parrent.right = y
         return y
     
     def rotateRight(self, parrent):
@@ -102,6 +107,11 @@ class Tree:
                 self.root.left = y
             elif y.parrent.right == parrent:
                 self.root.right = y
+        else:
+            if y.parrent.left == parrent:
+                y.parrent.left = y
+            elif y.parrent.right == parrent:
+                y.parrent.right = y
         return y
 
     def backbone(self, parrent, back=[]): # create backbone to build a new tree
@@ -201,11 +211,15 @@ myTree.insert(Leaf(20), myTree.root)
 myTree.insert(Leaf(30), myTree.root)
 myTree.insert(Leaf(40), myTree.root)
 myTree.insert(Leaf(50), myTree.root)
-myTree.insert(Leaf(25), myTree.root)
+myTree.insert(Leaf(60), myTree.root)
+myTree.insert(Leaf(70), myTree.root)
+myTree.insert(Leaf(80), myTree.root)
+myTree.insert(Leaf(90), myTree.root)
+myTree.insert(Leaf(100), myTree.root)
 print("Korzeń: ")
 print(myTree.root.value)
 myTree.printTree(myTree.root)
-print("Max value route: ")
+print("\nMax value route: ")
 myTree.max(myTree.root)
 print("Max value route: ")
 myTree.max(myTree.root)
