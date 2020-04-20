@@ -60,20 +60,31 @@ class Tree:
             if parrent == self.root:
                 self.root.right = parrent.right
         else: # found value
+            if parrent == self.root:
+                flag = True
+            else:
+                flag = False
             if parrent.left is None: # no left branch
                 tmp = parrent.right 
                 if parrent.right is not None:
                     tmp.parrent = parrent.parrent
-                parrent = None
+                if flag:
+                    self.root = tmp
                 return tmp
             elif parrent.right is None: # no right branch
                 tmp = parrent.left
                 if parrent.left is not None:
                     tmp.parrent = parrent.parrent
-                parrent = None
+                if flag:
+                    self.root = tmp
                 return tmp
             tmp = self.minValue(parrent.right)
-            parrent.value = tmp.value
+            if tmp == parrent:
+                tmp = None
+            if flag:
+                self.root.value = tmp.value
+            else:
+                parrent.value = tmp.value
             parrent.right = self.delete(tmp.value, parrent.right)
         # update height
         parrent.height = self.updateHeight(parrent)
@@ -81,7 +92,7 @@ class Tree:
             self.root.height = parrent.height
         
         # check balance
-        self.balanceAfterDelete(parrent)
+        parrent = self.balanceAfterDelete(parrent)
 
         return parrent
             
@@ -100,6 +111,7 @@ class Tree:
             elif self.getBalanceFactor(parrent.right) > 0: # RL rotation
                 parrent.right = self.rotateRight(parrent.right)
                 return self.rotateLeft(parrent)
+        return parrent
 
     def rootUpdate(self, leaf, parrent):
         if parrent == self.root:
@@ -258,31 +270,30 @@ class Tree:
 
 myTree = Tree()
 myTree.insert(Leaf(10), myTree.root)
-myTree.insert(Leaf(20), myTree.root)
-myTree.insert(Leaf(30), myTree.root)
-myTree.insert(Leaf(40), myTree.root)
-myTree.insert(Leaf(50), myTree.root)
-myTree.insert(Leaf(60), myTree.root)
-myTree.insert(Leaf(70), myTree.root)
-myTree.insert(Leaf(80), myTree.root)
-myTree.insert(Leaf(90), myTree.root)
-myTree.insert(Leaf(100), myTree.root)
-print("Korzeń: ")
+myTree.insert(Leaf(2), myTree.root)
+myTree.insert(Leaf(1), myTree.root)
+myTree.insert(Leaf(5), myTree.root)
+myTree.insert(Leaf(3), myTree.root)
+myTree.insert(Leaf(7), myTree.root)
+myTree.insert(Leaf(11), myTree.root)
+myTree.insert(Leaf(15), myTree.root)
+print("###AVL###")
+print("Root: ")
 print(myTree.root.value)
-myTree.printTree(myTree.root)
-print("\nWysokosc drzewa:")
+myTree.printTree(myTree.root) # preorder print
+print("\n Height:")
 print(myTree.root.height)
-print("Max value route: ")
+print("Max value path: ")
 myTree.max(myTree.root)
-print("Max value route: ")
-myTree.max(myTree.root)
-print("Min value route: ")
+print("Min value path: ")
 myTree.min(myTree.root)
-myTree.delete(40, myTree.root)
-print("Korzeń:")
+myTree.delete(7, myTree.root) # delete 40
+myTree.delete(7, myTree.root) # delete 40
+print("After 40 delete")
+print("Root:")
 print(myTree.root.value)
 myTree.printTree(myTree.root)
-print("\nWysokosc drzewa:")
+print("\n Height:")
 print(myTree.root.height)
 print("Preorder:")
 myTree.printTree(myTree.root)
@@ -291,5 +302,6 @@ myTree.inOrder(myTree.root)
 print("\nPostorder:")
 myTree.postOrder(myTree.root)
 myTree.chopDown(myTree.root)
-print("\nPreorder:")
+print("\nAfter remove")
+print("Preorder:")
 myTree.printTree(myTree.root)
