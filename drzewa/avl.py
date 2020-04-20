@@ -268,40 +268,53 @@ class Tree:
         else:
             return False
 
-myTree = Tree()
-myTree.insert(Leaf(10), myTree.root)
-myTree.insert(Leaf(2), myTree.root)
-myTree.insert(Leaf(1), myTree.root)
-myTree.insert(Leaf(5), myTree.root)
-myTree.insert(Leaf(3), myTree.root)
-myTree.insert(Leaf(7), myTree.root)
-myTree.insert(Leaf(11), myTree.root)
-myTree.insert(Leaf(15), myTree.root)
-print("###AVL###")
-print("Root: ")
-print(myTree.root.value)
-myTree.printTree(myTree.root) # preorder print
-print("\n Height:")
-print(myTree.root.height)
-print("Max value path: ")
-myTree.max(myTree.root)
-print("Min value path: ")
-myTree.min(myTree.root)
-myTree.delete(7, myTree.root) # delete 40
-myTree.delete(7, myTree.root) # delete 40
-print("After 40 delete")
-print("Root:")
-print(myTree.root.value)
-myTree.printTree(myTree.root)
-print("\n Height:")
-print(myTree.root.height)
-print("Preorder:")
-myTree.printTree(myTree.root)
-print("\nInorder:")
-myTree.inOrder(myTree.root)
-print("\nPostorder:")
-myTree.postOrder(myTree.root)
-myTree.chopDown(myTree.root)
-print("\nAfter remove")
-print("Preorder:")
-myTree.printTree(myTree.root)
+    def toDICT(self, parrent):
+        tmp = {}
+        if parrent is None:
+            return None
+        tmp['value'] = parrent.value
+        if parrent == self.root:
+            tmp['height'] = parrent.height
+        tmp['left'] = self.toDICT(parrent.left)
+        tmp['right'] = self.toDICT(parrent.right)
+        return tmp
+
+# myTree = Tree()
+# myTree.insert(Leaf(10), myTree.root)
+# myTree.insert(Leaf(2), myTree.root)
+# myTree.insert(Leaf(1), myTree.root)
+# myTree.insert(Leaf(5), myTree.root)
+# myTree.insert(Leaf(3), myTree.root)
+# myTree.insert(Leaf(7), myTree.root)
+# myTree.insert(Leaf(11), myTree.root)
+# myTree.insert(Leaf(15), myTree.root)
+# print("###AVL###")
+# print("Root: ")
+# print(myTree.root.value)
+# myTree.printTree(myTree.root) # preorder print
+# print("\n Height:")
+# print(myTree.root.height)
+# print("Max value path: ")
+# myTree.max(myTree.root)
+# print("Min value path: ")
+# myTree.min(myTree.root)
+# myTree.delete(7, myTree.root) # delete 40
+# myTree.delete(7, myTree.root) # delete 40
+# print("After 40 delete")
+# print("Root:")
+# print(myTree.root.value)
+# myTree.printTree(myTree.root)
+# print("\n Height:")
+# print(myTree.root.height)
+# print("Preorder:")
+# myTree.printTree(myTree.root)
+# print("\nInorder:")
+# myTree.inOrder(myTree.root)
+# print("\nPostorder:")
+# myTree.postOrder(myTree.root)
+# lul = myTree.toDICT(myTree.root)
+# print(lul)
+# myTree.chopDown(myTree.root)
+# print("\nAfter remove")
+# print("Preorder:")
+# myTree.printTree(myTree.root)

@@ -281,6 +281,22 @@ class Tree:
             return True
         else:
             return False
+    
+    def height(self, parrent):
+        if parrent is None:
+            return 0
+        return 1 + max(self.height(parrent.left), self.height(parrent.right))
+
+    def toDICT(self, parrent):
+        tmp = {}
+        if parrent is None:
+            return None
+        tmp['value'] = parrent.value
+        if parrent == self.root:
+            tmp['height'] = self.height(parrent)
+        tmp['left'] = self.toDICT(parrent.left)
+        tmp['right'] = self.toDICT(parrent.right)
+        return tmp
 
 # myTree = Tree()
 # myTree.insert(Leaf(10), myTree.root)
@@ -315,8 +331,12 @@ class Tree:
 # myTree.postOrder(myTree.root)
 # print("\nPreorder:")
 # myTree.printTree(myTree.root)
+# lul = myTree.toDICT(myTree.root)
+# print(lul)
 # myTree.dsw(myTree.root)
 # print("\nAfter DSW")
+# lul = myTree.toDICT(myTree.root)
+# print(lul)
 # print("\nRoot:")
 # print(myTree.root.value)
 # print("\nPreorder:")
