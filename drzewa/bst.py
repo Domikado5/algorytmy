@@ -25,7 +25,37 @@ class Tree:
             if parrent.right is None:
                 parrent.right = self.insert(leaf,parrent.right)
             else:
-                self.insert(leaf,parrent.right)      
+                self.insert(leaf,parrent.right)     
+
+    def insertIter(self, leaf, parrent):
+        while True:
+            if self.root is None:
+                self.root = leaf
+                break
+            elif self.root.left is None and self.root.value > leaf.value:
+                leaf.parrent = self.root
+                self.root.left = leaf
+                break
+            elif self.root.right is None and self.root.value <= leaf.value:
+                leaf.parrent = self.root
+                self.root.right = leaf
+                break
+            if parrent.value > leaf.value:
+                if parrent.left is None:
+                    leaf.parrent = parrent
+                    parrent.left = leaf
+                    break
+                else:
+                    parrent = parrent.left
+                    continue
+            elif parrent.value <= leaf.value:
+                if parrent.right is None:
+                    leaf.parrent = parrent
+                    parrent.right = leaf
+                    break
+                else:
+                    parrent = parrent.right 
+                    continue
 
     def delete(self, value, parrent):
         if parrent is None: # no value found
@@ -41,6 +71,8 @@ class Tree:
         else: # found value
             if parrent == self.root:
                 flag = True
+            else:
+                flag = False
             if parrent.left is None: # no left branch
                 tmp = parrent.right 
                 if parrent.right is not None:
@@ -129,6 +161,25 @@ class Tree:
         back.append(parrent.value)
         self.backbone(parrent.right, back)
 
+    def backboneIter(self, root, back=[]): # create backbone (iteration) to build a new tree
+        stack = []
+        while True:
+            if root is not None:
+                stack.append(root)
+                root = root.left
+            elif stack:
+                root = stack.pop()
+                back.append(root.value)
+                root = root.right
+            else:
+                break
+    
+    def dswIter(self, parrent): # DSW iteration algorithm
+        backbone = []
+        self.backboneIter(parrent, backbone)
+        n = len(backbone)-1
+        self.root = self.buildTree(backbone, 0, n)
+
     def dsw(self, parrent): # DSW algorithm
         backbone = []
         self.backbone(parrent, backbone)
@@ -161,6 +212,19 @@ class Tree:
         self.printTree(root.left)
         print("{} ".format(root.value), end="")
         self.printTree(root.right)
+    
+    def inOrderIter(self, root): # inorder iteration printing
+        stack = []
+        while True:
+            if root is not None:
+                stack.append(root)
+                root = root.left
+            elif stack:
+                root = stack.pop()
+                print("{} ".format(root.value), end="")
+                root = root.right
+            else:
+                break
 
     def postOrder(self, root): # postorder printing
         if root is None:
@@ -183,6 +247,11 @@ class Tree:
         if parrent is None or parrent.left is None:
             return parrent
         return self.minValue(parrent.left)
+
+    def minValueIter(self, parrent):
+        while parrent.left is not None:
+            parrent = parrent.left
+        return parrent
 
     def maxValue(self, parrent):
         if parrent is None or parrent.right is None:
@@ -213,43 +282,47 @@ class Tree:
         else:
             return False
 
-myTree = Tree()
-myTree.insert(Leaf(10), myTree.root)
-myTree.insert(Leaf(20), myTree.root)
-myTree.insert(Leaf(30), myTree.root)
-myTree.insert(Leaf(40), myTree.root)
-myTree.insert(Leaf(50), myTree.root)
-myTree.insert(Leaf(60), myTree.root)
-myTree.insert(Leaf(70), myTree.root)
-myTree.insert(Leaf(80), myTree.root)
-myTree.insert(Leaf(90), myTree.root)
-myTree.insert(Leaf(100), myTree.root)
-print("Korzeń: ")
-print(myTree.root.value)
-myTree.printTree(myTree.root)
-print("\nMax value route: ")
-myTree.max(myTree.root)
-print("Max value route: ")
-myTree.max(myTree.root)
-print("Min value route: ")
-myTree.min(myTree.root)
-myTree.delete(10, myTree.root)
-print("Korzeń:")
-print(myTree.root.value)
-myTree.printTree(myTree.root)
-print("\nPreorder:")
-myTree.printTree(myTree.root)
-print("\nInorder:")
-myTree.inOrder(myTree.root)
-print("\nPostorder:")
-myTree.postOrder(myTree.root)
+# myTree = Tree()
+# myTree.insert(Leaf(10), myTree.root)
+# myTree.insert(Leaf(20), myTree.root)
+# myTree.insert(Leaf(30), myTree.root)
+# myTree.insert(Leaf(40), myTree.root)
+# myTree.insert(Leaf(50), myTree.root)
+# myTree.insert(Leaf(60), myTree.root)
+# myTree.insert(Leaf(70), myTree.root)
+# myTree.insert(Leaf(80), myTree.root)
+# myTree.insert(Leaf(90), myTree.root)
+# myTree.insert(Leaf(100), myTree.root)
+# print("###BST###")
+# print("Root: ")
+# print(myTree.root.value)
+# myTree.printTree(myTree.root)
+# print("\nMax value path: ")
+# myTree.max(myTree.root)
+# print("Min value path: ")
+# myTree.min(myTree.root)
+# myTree.delete(10, myTree.root) # delete 10 from tree
+# myTree.delete(10, myTree.root) # delete 10 from tree
+# print("After 10 delete")
+# print("Root:")
+# print(myTree.root.value)
+# myTree.printTree(myTree.root)
+# print("\nPreorder:")
+# myTree.printTree(myTree.root)
+# print("\nInorder:")
+# myTree.inOrder(myTree.root)
+# print("\nPostorder:")
+# myTree.postOrder(myTree.root)
+# print("\nPreorder:")
+# myTree.printTree(myTree.root)
+# myTree.dsw(myTree.root)
+# print("\nAfter DSW")
+# print("\nRoot:")
+# print(myTree.root.value)
+# print("\nPreorder:")
+# myTree.printTree(myTree.root)
+# print("\nMax value path: ")
+# myTree.max(myTree.root)
 # myTree.chopDown(myTree.root)
-print("\nPreorder:")
-myTree.printTree(myTree.root)
-myTree.dsw(myTree.root)
-print("\nKorzeń:")
-print(myTree.root.value)
-print("\nPreorder:")
-myTree.printTree(myTree.root)
-print("Max value route: ")
-myTree.max(myTree.root)
+# print("\nAfter remove:")
+# myTree.printTree(myTree.root)
