@@ -18,20 +18,20 @@ result3 = 'Inorder;'
 for num in n:
     x = generateNum(num)
     tree = avl.Tree()
-    before = time.time()*100
+    before = time.time()*1000
     for value in x:
         tree.insert(avl.Leaf(value), tree.root) # insert test
-    after = time.time()*100
+    after = time.time()*1000
     ms = round(after-before,1)
     result1 += str(ms)+';'
-    before = time.time()*100
+    before = time.time()*1000
     print(tree.minValue(tree.root)) # minimum value test
-    after = time.time()*100
+    after = time.time()*1000
     ms = round(after-before,1)
     result2 += str(ms)+';'
-    before = time.time()*100
+    before = time.time()*1000
     tree.inOrder(tree.root) # inorder test
-    after = time.time()*100
+    after = time.time()*1000
     ms = round(after-before,1)
     result3 += str(ms)+';'
 print(result1)
@@ -50,23 +50,23 @@ result4 = 'DSW;'
 for num in n:
     x = generateNum(num)
     tree = bst.Tree()
-    before = time.time()*100
+    before = time.time()*1000
     for value in x:
         tree.insertIter(bst.Leaf(value), tree.root) # insert test
-    after = time.time()*100
+    after = time.time()*1000
     ms = round(after-before,1)
     result1 += str(ms)+';'
-    before = time.time()*100
+    before = time.time()*1000
     print(tree.minValueIter(tree.root)) # minimum value test
-    after = time.time()*100
+    after = time.time()*1000
     ms = round(after-before,1)
     result2 += str(ms)+';'
-    before = time.time()*100
+    before = time.time()*1000
     tree.inOrderIter(tree.root) # inorder test
     after = time.time()*100
     ms = round(after-before,1)
     result3 += str(ms)+';'
-    before = time.time()*100
+    before = time.time()*1000
     tree.dswIter(tree.root) #dsw test
     after = time.time()*100
     ms = round(after-before,1)
