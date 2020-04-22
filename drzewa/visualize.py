@@ -6,9 +6,9 @@ tree = None
 def create_nav():
     n = html.NAV(id='nav')
     n <= html.INPUT(id='insert')
-    n <= html.BUTTON("Insert", id='insert-btn')
+    n <= html.BUTTON("Insert", id='insert-btn', Class='btn')
     n <= html.INPUT(id='delete')
-    n <= html.BUTTON('Delete', id='delete-btn')
+    n <= html.BUTTON('Delete', id='delete-btn', Class='btn')
     return n
 
 def get_type(e):
@@ -21,16 +21,18 @@ def get_type(e):
         document['container'] <= html.DIV(id = 'tree')
         document['insert-btn'].bind('click', insert_event)
         document['delete-btn'].bind('click', delete_event)
+        document['h1'].text = 'AVL tree'
     elif e.target.value == 'bst':
         tree = bst.Tree()
         del document['nav']
         n = create_nav()
-        n <= html.BUTTON('DSW', id='dsw-btn')
+        n <= html.BUTTON('DSW', id='dsw-btn', Class='btn')
         document['container'] <= n
         document['container'] <= html.DIV(id = 'tree')
         document['insert-btn'].bind('click', insert_event)
         document['delete-btn'].bind('click', delete_event)
         document['dsw-btn'].bind('click', dsw_event)
+        document['h1'].text = 'BST tree'
     else:
         alert("Something went wrong. Please refresh this page.")
 
