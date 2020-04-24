@@ -9,7 +9,7 @@ body{
     max-height: 100vh;
     background: rgba(30, 100, 30, 0.8) url("./tree.gif") no-repeat center center;
     display: grid;
-    grid-template: 60px 50px auto / 100%;
+    grid-template: 60px 50px 60px auto / 100%;
     align-items: center;
     justify-items: center;
     font-family: 'Roboto';
@@ -23,6 +23,12 @@ h1{
 
 nav{
     height: 100%;
+}
+
+#output{
+    height: auto;
+    width: auto;
+    font-size: 1.5em;
 }
 
 input{

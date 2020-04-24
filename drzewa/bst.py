@@ -233,6 +233,36 @@ class Tree:
         self.printTree(root.right)
         print("{} ".format(root.value), end="")
 
+    def inorderVis(self, root, tmp=[]):
+        if root == self.root:
+            tmp.clear()
+        if root is None:
+            return
+        self.inorderVis(root.left)
+        tmp.append(str(root.value))
+        self.inorderVis(root.right)
+        return tmp
+
+    def preorderVis(self, root, tmp=[]):
+        if root == self.root:
+            tmp.clear()
+        if root is None:
+            return
+        tmp.append(str(root.value))
+        self.inorderVis(root.left)
+        self.inorderVis(root.right)
+        return tmp
+
+    def postorderVis(self, root, tmp=[]):
+        if root == self.root:
+            tmp.clear()
+        if root is None:
+            return
+        self.inorderVis(root.left)
+        self.inorderVis(root.right)
+        tmp.append(str(root.value))
+        return tmp
+
     def chopDown(self, root): # delete whole tree - postorder
         if root is None:
             return
@@ -266,7 +296,19 @@ class Tree:
         else:
             print("{} -> ".format(parrent.value), end="")
             self.max(parrent.right)
-    
+
+    def maxVis(self, parrent, tmp=[]):
+        if parrent == self.root:
+            tmp.clear()
+        if parrent.right is None:
+            tmp.append(str(parrent.value))
+            r = " -> ".join(tmp)
+            m = "Max: " + str(parrent.value)
+            return r, m
+        else:
+            tmp.append(str(parrent.value))
+            return self.maxVis(parrent.right)
+
     def min(self, parrent):
         if parrent.left is None:
             print(parrent.value)
@@ -275,6 +317,18 @@ class Tree:
         else:
             print("{} -> ".format(parrent.value), end="")
             self.min(parrent.left)
+
+    def minVis(self, parrent, tmp=[]):
+        if parrent == self.root:
+            tmp.clear()
+        if parrent.left is None:
+            tmp.append(str(parrent.value))
+            r = " -> ".join(tmp)
+            m = "Min: " + str(parrent.value)
+            return r, m
+        else:
+            tmp.append(str(parrent.value))
+            return self.minVis(parrent.left)
 
     def isRoot(self, parrent):
         if parrent.parrent is None:
