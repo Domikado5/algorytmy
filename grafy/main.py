@@ -1,5 +1,6 @@
 import numpy as np
 import random as rn
+from termcolor import colored
 
 
 vertices = 10 # liczba wierzcholkow
@@ -61,13 +62,31 @@ def BFS(nL, v):
         queue = np.delete(queue, 0)
         print("Odwiedzone", visited, " Kolejka ", queue)
         
+        
+def DFS(nL, v, s=0):
+    visited = []
+    stack = []
+    visited.append(s)
+    stack = np.array(stack + nL[s][::-1])
+    print("Odwiedzone", visited, " Stos ", stack)
+    while len(visited) < v:
+        nextVer = stack[-1]
+        stack = np.delete(stack, -1)
+        visited.append(nextVer)
+        tmp = []
+        if nL[nextVer]:
+            tmp = nL[nextVer][::-1]
+        for x in tmp:
+            if x not in visited and x not in stack: # sprawdzanie czy wierzchołek już wystąpił
+                stack = np.append(stack, x)
+        print("Odwiedzone", visited, " Stos ", stack)    
 
-def DFS():
-    pass
 
 generateDirectedGraph(neighborhoodMatrix, neighborhoodList, edgesTable, vertices)
-print("Macierz sasiedztw: \n", neighborhoodMatrix)
-print("Lista następnikow: \n", neighborhoodList)
-print("Tabela krawedzi: \n", edgesTable)
-print("Przechodzenie wszerz:")
+print(colored("Macierz sasiedztw: \n", 'white', attrs=['bold']), neighborhoodMatrix)
+print(colored("\nLista następnikow: \n", 'white', attrs=['bold']), neighborhoodList)
+print(colored("\nTabela krawedzi: \n", 'white', attrs=['bold']), edgesTable)
+print(colored("\nPrzechodzenie wszerz:", 'white', attrs=['bold']))
 BFS(neighborhoodList, vertices)
+print(colored("\nPrzechodzenie w głąb:", 'white', attrs=['bold']))
+DFS(neighborhoodList, vertices)
