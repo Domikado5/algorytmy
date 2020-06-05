@@ -52,7 +52,7 @@ def BFS(nL, v):
     visited.append(0)
     queue = np.unique(np.concatenate((queue, nL[0])))
     queue = queue.astype('int32')
-    print("Odwiedzone", visited, " Kolejka ",queue)
+    print("Odwiedzone", colored(visited, 'white', 'on_blue', attrs=['bold']), " Kolejka ", colored(queue, 'white', 'on_blue', attrs=['bold']))
     while len(visited) < v:
         nextVer = queue[0]
         visited.append(nextVer)
@@ -60,7 +60,7 @@ def BFS(nL, v):
             if nL[nextVer][i] not in visited and nL[nextVer][i] not in queue: # sprawdzanie czy wierzchołek już wystąpił
                 queue = np.append(queue, nL[nextVer][i])
         queue = np.delete(queue, 0)
-        print("Odwiedzone", visited, " Kolejka ", queue)
+        print("Odwiedzone", colored(visited, 'white', 'on_blue', attrs=['bold']), " Kolejka ", colored(queue, 'white', 'on_blue', attrs=['bold']))
         
         
 def DFS(nL, v, s=0):
@@ -68,7 +68,7 @@ def DFS(nL, v, s=0):
     stack = []
     visited.append(s)
     stack = np.array(stack + nL[s][::-1])
-    print("Odwiedzone", visited, " Stos ", stack)
+    print("Odwiedzone", colored(visited, 'white', 'on_cyan', attrs=['bold']), " Stos ", colored(stack, 'white', 'on_cyan', attrs=['bold']))
     while len(visited) < v:
         nextVer = stack[-1]
         stack = np.delete(stack, -1)
@@ -79,7 +79,7 @@ def DFS(nL, v, s=0):
         for x in tmp:
             if x not in visited and x not in stack: # sprawdzanie czy wierzchołek już wystąpił
                 stack = np.append(stack, x)
-        print("Odwiedzone", visited, " Stos ", stack)    
+        print("Odwiedzone", colored(visited, 'white', 'on_cyan', attrs=['bold']), " Stos ", colored(stack, 'white', 'on_cyan', attrs=['bold']))
 
 
 generateDirectedGraph(neighborhoodMatrix, neighborhoodList, edgesTable, vertices)
