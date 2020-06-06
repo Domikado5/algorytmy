@@ -1,7 +1,7 @@
 import numpy as np
 import random as rn
 from termcolor import colored
-
+import copy
 
 vertices = 10 # liczba wierzcholkow
 neighborhoodMatrix = np.zeros((vertices,vertices), dtype=int) # macierz sasiedztw / neighborhoodMatrix
@@ -81,6 +81,39 @@ def DFS(nL, v, s=0):
                 stack = np.append(stack, x)
         print("Odwiedzone", colored(visited, 'white', 'on_cyan', attrs=['bold']), " Stos ", colored(stack, 'white', 'on_cyan', attrs=['bold']))
 
+def DFSsort(nL, v):
+    white = [ i for i in range(v) ]
+    gray = []
+    black = []
+    nL = copy.deepcopy(nL)
+    tmp = []
+
+    while len(black) < v:
+        if type(tmp) is list: # branie kolejnego elementu z listy wierzcholkow
+            tmp = white.pop(0)
+        if tmp not in gray and tmp not in black: # sprawdzanie czy wierzcholek juz gdzies wystepuje
+            gray.append(tmp)
+        if tmp in black:
+            if not gray:
+                tmp = []
+            else:
+                tmp = gray.pop() # powrot do sprawdzania ostatniego elementu z listy "szarych"
+            continue
+        if not nL[tmp]: # sprawdzanie czy wierzcholek ma nastepnikow
+            black = [tmp] + black
+            gray.pop(gray.index(tmp))
+            if not gray:
+                tmp = []
+            else:
+                tmp = gray.pop() # powrot do sprawdzania ostatniego elementu z listy "szarych"
+            continue
+        if nL[tmp][0] in gray or nL[tmp][0] in black:
+            nL[tmp].pop(0)
+            continue
+        tmp = nL[tmp].pop(0) # sprawdzanie nastepnika wierzcholka
+    
+    print(black)
+
 
 generateDirectedGraph(neighborhoodMatrix, neighborhoodList, edgesTable, vertices)
 print(colored("Macierz sasiedztw: \n", 'white', attrs=['bold']), neighborhoodMatrix)
@@ -90,3 +123,5 @@ print(colored("\nPrzechodzenie wszerz:", 'white', attrs=['bold']))
 BFS(neighborhoodList, vertices)
 print(colored("\nPrzechodzenie w głąb:", 'white', attrs=['bold']))
 DFS(neighborhoodList, vertices)
+print(colored("\nSortowanie topologiczne w głąb:", 'white', attrs=['bold']))
+DFSsort(neighborhoodList, vertices)
