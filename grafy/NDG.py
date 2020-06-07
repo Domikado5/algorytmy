@@ -27,12 +27,28 @@ def generateNonDirectedHamiltonianGraph(nM, nL, eT, v, s):
     while bonusEdges > 0: # generowanie macierzy
         free = np.where(nM == 0)
         free = np.stack((free[0], free[1]), axis=1)
+        
         indices = np.where(free[:,0] != free[:,1])[0]
         x, y = free[np.random.choice(indices)]
         nM[x][y] = 1
         nM[y][x] = 1
         bonusEdges -= 1
+        if bonusEdges <= 0:
+            break
+        
+        tmp = np.where(nM[x] == 1)[0]
+        indices = np.where(( free[:,0] != free[:,1] ) & ( free[:,0] == y ) & ( np.isin(free[:,1], tmp, invert=True) ))[0]
+        z = free[np.random.choice(indices)][1]
+        nM[y][z] = 1
+        nM[z][y] = 1
+        bonusEdges -= 1
+        if bonusEdges <= 0:
+            break
 
+        nM[z][x] = 1
+        nM[x][z] = 1
+        bonusEdges -= 1
+        
     for i in range(v):
         connections = np.where(nM[i][:] == 1)
         nL[i] = list(connections[0])
