@@ -37,7 +37,7 @@ def generateNonDirectedHamiltonianGraph(nM, nL, eT, v, s):
             break
         
         tmp = np.where(nM[x] == 1)[0]
-        indices = np.where(( free[:,0] != free[:,1] ) & ( free[:,0] == y ) & ( np.isin(free[:,1], tmp, invert=True) ))[0]
+        indices = np.where(( free[:,0] != free[:,1] ) & ( free[:,0] == y ) & ( np.isin(free[:,1], tmp, invert=True) ))[0] # losowanie dwoch kolejnych wiercholkow zeby zachowac parzystosc stopni wierzcholkow
         z = free[np.random.choice(indices)][1]
         nM[y][z] = 1
         nM[z][y] = 1
@@ -79,6 +79,22 @@ def generateNonDirectedNonHamiltonianGraph(nM, nL, eT, v):
         nL[i] = list(connections[0])
         eT += [[i,j] for j in nL[i]] 
 
+def Euler(current, v, nM, r):
+    for i in range(v):
+        if nM[current][i]:
+            nM[current][i] = 0
+            nM[i][current] = 0
+            Euler(i, v, nM, r)
+    r.append(current)
+
+def EulerCheck(current, v, nM, r):
+    Euler(current, v, nM, r)
+
+    if(np.count_nonzero(nM == 1) == 0):
+        print("Cykl eulera:", r)
+    else:
+        print("Nie istnieje cykl Eulera")
+
 generateNonDirectedHamiltonianGraph(neighborhoodMatrix, neighborhoodList, edgesTable, vertices, saturation[0])
 print("Macierz:")
 print(neighborhoodMatrix)
@@ -87,7 +103,11 @@ print(neighborhoodList)
 print("Krawedzie:")
 print(edgesTable)
 
-neighborhoodMatrix = np.zeros((vertices,vertices), dtype=int) # macierz sasiedztw / neighborhoodMatrix
+neighborhoodMatrix2 = neighborhoodMatrix.copy() # kopiowanie macierzy sasiedztw
+result = []
+EulerCheck(0, vertices, neighborhoodMatrix2, result)
+
+neighborhoodMatrix = np.zeros((vertices,vertices), dtype=int) # zerowanie danych
 neighborhoodList = [[] for i in range(vertices)]
 edgesTable = []
 
@@ -98,6 +118,10 @@ print("Lista nastepnikow:")
 print(neighborhoodList)
 print("Krawedzie:")
 print(edgesTable)
+
+neighborhoodMatrix2 = neighborhoodMatrix.copy() # kopiowanie macierzy sasiedztw
+result = []
+EulerCheck(0, vertices, neighborhoodMatrix2, result)
 
 neighborhoodMatrix = np.zeros((vertices,vertices), dtype=int) # macierz sasiedztw / neighborhoodMatrix
 neighborhoodList = [[] for i in range(vertices)]
