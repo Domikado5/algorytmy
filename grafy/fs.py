@@ -8,7 +8,7 @@ sys.setrecursionlimit(10**9)
 
 f = open("fs.txt",'w')
 
-vertices = [100,200,300,400,500,600,700,800,900,1000]
+vertices = [50,100,150,200,250,300,350,400,450,500]
 
 result0 = 'vertices'
 

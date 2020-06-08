@@ -8,7 +8,7 @@ sys.setrecursionlimit(10**9)
 
 f = open("hamilton.txt",'w')
 
-vertices = [100,200,300,400,500,600,700,800,900,1000]
+vertices = [100,125,150,175,200,225,250,275,300,325]
 saturation = [0.3, 0.7]
 
 result0 = 'vertices'

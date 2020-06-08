@@ -26,8 +26,6 @@ def generateNonDirectedHamiltonianGraph(nM, nL, eT, v, s):
         nM[x][y] = 1
         nM[y][x] = 1
         bonusEdges -= 1
-        if bonusEdges <= 0:
-            break
         
         tmp = np.where(nM[x] == 1)[0]
         indices = np.where(( free[:,0] != free[:,1] ) & ( free[:,0] == y ) & ( np.isin(free[:,1], tmp, invert=True) ))[0] # losowanie dwoch kolejnych wiercholkow zeby zachowac parzystosc stopni wierzcholkow
@@ -35,8 +33,6 @@ def generateNonDirectedHamiltonianGraph(nM, nL, eT, v, s):
         nM[y][z] = 1
         nM[z][y] = 1
         bonusEdges -= 1
-        if bonusEdges <= 0:
-            break
 
         nM[z][x] = 1
         nM[x][z] = 1
