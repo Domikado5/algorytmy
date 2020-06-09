@@ -59,8 +59,8 @@ def BFSsort(nL, v):
     nL = copy.deepcopy(nL)
     result = []
     while len(result) < v:
-        counter = [ sum([ 1 if j in i else 0 for i in nL ]) for j in range(v) ]
-        tmp = [ i for i, x in enumerate(counter) if x == 0 and i not in result ]
+        counter = [ sum([ 1 if j in i else 0 for i in nL ]) for j in range(v) ] # licznik topologi wierzcholkow
+        tmp = [ i for i, x in enumerate(counter) if x == 0 and i not in result ] # dodawanie wierzcholkow bez wejsc do kolejki
         for i in tmp:
             nL[i] = []
         result += tmp
@@ -118,24 +118,24 @@ def DFSsort(nL, v):
     return black
 
 
-# vertices = 10 # liczba wierzcholkow
-# neighborhoodMatrix = np.zeros((vertices,vertices), dtype=int) # macierz sasiedztw / neighborhoodMatrix
-# neighborhoodList = [[] for i in range(vertices)]
-# edgesTable = []
+vertices = 5 # liczba wierzcholkow
+neighborhoodMatrix = np.zeros((vertices,vertices), dtype=int) # macierz sasiedztw / neighborhoodMatrix
+neighborhoodList = [[] for i in range(vertices)]
+edgesTable = []
 
-# generateDirectedGraph(neighborhoodMatrix, neighborhoodList, edgesTable, vertices)
-# print(colored("Macierz sasiedztw: \n", 'white', attrs=['bold']), neighborhoodMatrix)
-# print(colored("\nLista następnikow: \n", 'white', attrs=['bold']), neighborhoodList)
-# print(colored("\nTabela krawedzi: \n", 'white', attrs=['bold']), edgesTable)
+generateDirectedGraph(neighborhoodMatrix, neighborhoodList, edgesTable, vertices)
+print(colored("Macierz sasiedztw: \n", 'white', attrs=['bold']), neighborhoodMatrix)
+print(colored("\nLista następnikow: \n", 'white', attrs=['bold']), neighborhoodList)
+print(colored("\nTabela krawedzi: \n", 'white', attrs=['bold']), edgesTable)
 
-# print(colored("\nPrzechodzenie wszerz:", 'white', attrs=['bold']))
-# BFS(neighborhoodList, vertices)
+print(colored("\nPrzechodzenie wszerz:", 'white', attrs=['bold']))
+BFS(neighborhoodList, vertices)
 
-# print(colored("\nPrzechodzenie w głąb:", 'white', attrs=['bold']))
-# DFS(neighborhoodList, vertices)
+print(colored("\nPrzechodzenie w głąb:", 'white', attrs=['bold']))
+DFS(neighborhoodList, vertices)
 
-# print(colored("\nSortowanie topologiczne w głąb (lista następników):", 'white', attrs=['bold']))
-# print(DFSsort(neighborhoodList, vertices))
+print(colored("\nSortowanie topologiczne w głąb (lista następników):", 'white', attrs=['bold']))
+print(DFSsort(neighborhoodList, vertices))
 
-# print(colored("\nSortowanie topologiczne wszerz (lista następników):", 'white', attrs=['bold']))
-# print(BFSsort(neighborhoodList, vertices))
+print(colored("\nSortowanie topologiczne wszerz (lista następników):", 'white', attrs=['bold']))
+print(BFSsort(neighborhoodList, vertices))
