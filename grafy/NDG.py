@@ -27,8 +27,9 @@ def generateNonDirectedHamiltonianGraph(nM, nL, eT, v, s):
         nM[y][x] = 1
         bonusEdges -= 1
         
-        tmp = np.where(nM[x] == 1)[0]
-        indices = np.where(( free[:,0] != free[:,1] ) & ( free[:,0] == y ) & ( np.isin(free[:,1], tmp, invert=True) ))[0] # losowanie dwoch kolejnych wiercholkow zeby zachowac parzystosc stopni wierzcholkow
+        free = np.where(nM == 0)
+        free = np.stack((free[0], free[1]), axis=1)
+        indices = np.where( (( free[:,0] != free[:,1] ) & ( free[:,0] == y )) )[0] # losowanie dwoch kolejnych wiercholkow zeby zachowac parzystosc stopni wierzcholkow
         z = free[np.random.choice(indices)][1]
         nM[y][z] = 1
         nM[z][y] = 1
@@ -68,21 +69,28 @@ def generateNonDirectedNonHamiltonianGraph(nM, nL, eT, v):
         nL[i] = list(connections[0])
         eT += [[i,j] for j in nL[i]] 
 
-def Euler(current, v, nM, r):
+
+
+def Euler(current, v, nM):
+    global result
+
     for i in range(v):
         if nM[current][i]:
             nM[current][i] = 0
             nM[i][current] = 0
-            Euler(i, v, nM, r)
-    r.append(current)
+            Euler(i, v, nM)
+    
+    result.append(current)
 
-def EulerCheck(current, v, nM, r):
-    Euler(current, v, nM, r)
+def EulerCheck(current, v, nM):
+    Euler(current, v, nM)
 
     if(np.count_nonzero(nM == 1) == 0):
         return True
     else:
         return False
+
+
 
 def nextVer(nM, current, r, p):
     if nM[ r[p-1] ][ current ] == 0:
@@ -122,77 +130,84 @@ def HamiltonCheck(v, nM, r):
     return True
 
 
-# vertices = 10 # liczba wierzcholkow
-# neighborhoodMatrix = np.zeros((vertices,vertices), dtype=int) # macierz sasiedztw / neighborhoodMatrix
-# neighborhoodList = [[] for i in range(vertices)]
-# edgesTable = []
-# saturation = [0.3, 0.7] # nasycenie grafu
+vertices = 5 # liczba wierzcholkow
+neighborhoodMatrix = np.zeros((vertices,vertices), dtype=int) # macierz sasiedztw / neighborhoodMatrix
+neighborhoodList = [[] for i in range(vertices)]
+edgesTable = []
+saturation = [0.3, 0.7] # nasycenie grafu
 
-# generateNonDirectedHamiltonianGraph(neighborhoodMatrix, neighborhoodList, edgesTable, vertices, saturation[0])
-# print("Macierz:")
-# print(neighborhoodMatrix)
-# print("Lista nastepnikow:")
-# print(neighborhoodList)
-# print("Krawedzie:")
-# print(edgesTable)
+print("\n",colored("Graf hamiltonowski 30%", 'white', 'on_grey', attrs=['bold']))
+generateNonDirectedHamiltonianGraph(neighborhoodMatrix, neighborhoodList, edgesTable, vertices, saturation[0])
+print("\n",colored("Macierz:", 'white', attrs=['bold']))
+print(neighborhoodMatrix)
+print("\n",colored("Lista nastepnikow:", 'white', attrs=['bold']))
+print(neighborhoodList)
+print("\n",colored("Krawedzie:", 'white', attrs=['bold']))
+print(edgesTable)
+print("Ilosc krawedzi: ",len(edgesTable)/2)
 
-# path = [ -1 for i in range(vertices) ]
+path = [ -1 for i in range(vertices) ]
 
-# if HamiltonCheck(vertices, neighborhoodMatrix, path):
-#     print("Cykl Hamiltona: ", path+[0])
-# else:
-#     print("Cykl Hamiltona nie istnieje.")
+if HamiltonCheck(vertices, neighborhoodMatrix, path):
+    print(colored("Cykl Hamiltona: ", 'white', attrs=['bold']), path+[0])
+else:
+    print(colored("Cykl Hamiltona nie istnieje.", 'white', attrs=['bold']))
 
-# neighborhoodMatrix2 = neighborhoodMatrix.copy() # kopiowanie macierzy sasiedztw
-# result = []
-# if EulerCheck(0, vertices, neighborhoodMatrix2, result):
-#     print("Cykl Eulera:", result)
-# else:
-#     print("Nie istnieje cykl Eulera")
+neighborhoodMatrix2 = neighborhoodMatrix.copy() # kopiowanie macierzy sasiedztw
+result = []
+if EulerCheck(0, vertices, neighborhoodMatrix2):
+    print(colored("Cykl Eulera:", 'white', attrs=['bold']), result)
+else:
+    print(colored("Nie istnieje cykl Eulera", 'white', attrs=['bold']))
+print("Dlugosc cyklu eulera: ", len(result))
 
-# neighborhoodMatrix = np.zeros((vertices,vertices), dtype=int) # zerowanie danych
-# neighborhoodList = [[] for i in range(vertices)]
-# edgesTable = []
+neighborhoodMatrix = np.zeros((vertices,vertices), dtype=int) # zerowanie danych
+neighborhoodList = [[] for i in range(vertices)]
+edgesTable = []
 
-# generateNonDirectedHamiltonianGraph(neighborhoodMatrix, neighborhoodList, edgesTable, vertices, saturation[1])
-# print("Macierz:")
-# print(neighborhoodMatrix)
-# print("Lista nastepnikow:")
-# print(neighborhoodList)
-# print("Krawedzie:")
-# print(edgesTable)
+print("\n",colored("Graf hamiltonowski 70%", 'white', 'on_grey', attrs=['bold']))
+generateNonDirectedHamiltonianGraph(neighborhoodMatrix, neighborhoodList, edgesTable, vertices, saturation[1])
+print("\n",colored("Macierz:", 'white', attrs=['bold']))
+print(neighborhoodMatrix)
+print("\n",colored("Lista nastepnikow:", 'white', attrs=['bold']))
+print(neighborhoodList)
+print("\n",colored("Krawedzie:", 'white', attrs=['bold']))
+print(edgesTable)
+print("Ilosc krawedzi: ",len(edgesTable)/2)
 
-# path = [ -1 for i in range(vertices)]
+path = [ -1 for i in range(vertices)]
 
-# if HamiltonCheck(vertices, neighborhoodMatrix, path):
-#     print("Cykl Hamiltona: ", path+[0])
-# else:
-#     print("Cykl Hamiltona nie istnieje.")
+if HamiltonCheck(vertices, neighborhoodMatrix, path):
+    print(colored("Cykl Hamiltona: ", 'white', attrs=['bold']), path+[0])
+else:
+    print(colored("Cykl Hamiltona nie istnieje.", 'white', attrs=['bold']))
 
-# neighborhoodMatrix2 = neighborhoodMatrix.copy() # kopiowanie macierzy sasiedztw
-# result = []
-# if EulerCheck(0, vertices, neighborhoodMatrix2, result):
-#     print("Cykl Eulera:", result)
-# else:
-#     print("Nie istnieje cykl Eulera")
+neighborhoodMatrix2 = neighborhoodMatrix.copy() # kopiowanie macierzy sasiedztw
+result = []
+if EulerCheck(0, vertices, neighborhoodMatrix2):
+    print(colored("Cykl Eulera:", 'white', attrs=['bold']), result)
+else:
+    print(colored("Nie istnieje cykl Eulera", 'white', attrs=['bold']))
+print("Dlugosc cyklu eulera: ", len(result))
 
-# vertices = 10
+vertices = 10
 
-# neighborhoodMatrix = np.zeros((vertices,vertices), dtype=int) # macierz sasiedztw / neighborhoodMatrix
-# neighborhoodList = [[] for i in range(vertices)]
-# edgesTable = []
+neighborhoodMatrix = np.zeros((vertices,vertices), dtype=int) # macierz sasiedztw / neighborhoodMatrix
+neighborhoodList = [[] for i in range(vertices)]
+edgesTable = []
 
-# generateNonDirectedNonHamiltonianGraph(neighborhoodMatrix, neighborhoodList, edgesTable, vertices)
-# print("Macierz:")
-# print(neighborhoodMatrix)
-# print("Lista nastepnikow:")
-# print(neighborhoodList)
-# print("Krawedzie:")
-# print(edgesTable)
+print("\n",colored("Graf 50% nie hamiltonowski", 'white', 'on_grey', attrs=['bold']))
+generateNonDirectedNonHamiltonianGraph(neighborhoodMatrix, neighborhoodList, edgesTable, vertices)
+print("\n",colored("Macierz:", 'white', attrs=['bold']))
+print(neighborhoodMatrix)
+print("\n",colored("Lista nastepnikow:", 'white', attrs=['bold']))
+print(neighborhoodList)
+print("\n",colored("Krawedzie:", 'white', attrs=['bold']))
+print(edgesTable)
 
-# path = [ -1 for i in range(vertices)]
+path = [ -1 for i in range(vertices)]
 
-# if HamiltonCheck(vertices, neighborhoodMatrix, path):
-#     print("Cykl Hamiltona: ", path+[0])
-# else:
-#     print("Cykl Hamiltona nie istnieje.")
+if HamiltonCheck(vertices, neighborhoodMatrix, path):
+    print(colored("Cykl Hamiltona: ", 'white', attrs=['bold']), path+[0])
+else:
+    print(colored("Cykl Hamiltona nie istnieje.", 'white', attrs=['bold']))
